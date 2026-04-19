@@ -1,0 +1,39 @@
+{
+  "name": "build-claude-code",
+  "version": "0.0.1",
+  "description": "从0到1构建 Claude Code 风格的 AI Coding Agent",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsdown",
+    "s01": "tsx src/sessions/s01-agent-loop.ts",
+    "s02": "tsx src/sessions/s02-tool-use.ts",
+    "s03": "tsx src/sessions/s03-todo-write.ts",
+    "s04": "tsx src/sessions/s04-subagent.ts",
+    "s05": "tsx src/sessions/s05-skill-loading.ts",
+    "s06": "tsx src/sessions/s06-context-compact.ts",
+    "s07": "tsx src/sessions/s07-task-system.ts",
+    "s08": "tsx src/sessions/s08-background-tasks.ts",
+    "s09": "tsx src/sessions/s09-agent-teams.ts",
+    "s10": "tsx src/sessions/s10-team-protocols.ts",
+    "s11": "tsx src/sessions/s11-autonomous-agents.ts",
+    "s12": "tsx src/sessions/s12-worktree-isolation.ts",
+    "full": "tsx src/sessions/s-full-agent.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "dotenv": "^16.5.0",
+    "yaml": "^2.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "tsdown": "^0.11.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  },
+  "packageManager": "pnpm@10.10.0",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

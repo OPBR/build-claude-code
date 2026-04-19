@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.tasks/
+.team/
+.transcripts/
+.worktrees/
+*.log
+.DS_Store
+Thumbs.db
