@@ -5,6 +5,7 @@ dist/
 .team/
 .transcripts/
 .worktrees/
+learn/output/
 *.log
 .DS_Store
 Thumbs.db
