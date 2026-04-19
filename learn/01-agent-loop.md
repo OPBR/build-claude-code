@@ -44,29 +44,29 @@ async function agentLoop(messages: Message[]): Promise<void> {
       messages: messages,
       tools: TOOLS,
       max_tokens: 8000,
-    });
+    })
 
     // 2. 记录 assistant 回复
     messages.push({
       role: 'assistant',
       content: response.content as ContentBlock[],
-    });
+    })
 
     // 3. 如果模型决定停止，退出循环
     if (response.stop_reason !== 'tool_use') {
-      return;  // <-- 关键：模型决定何时停止
+      return // <-- 关键：模型决定何时停止
     }
 
     // 4. 执行所有工具调用
-    const results: ToolResultBlock[] = [];
+    const results: ToolResultBlock[] = []
     for (const block of response.content) {
       if (block.type === 'tool_use') {
-        const output = await executeTool(block.name, block.input);
+        const output = await executeTool(block.name, block.input)
         results.push({
           type: 'tool_result',
           tool_use_id: block.id,
           content: output,
-        });
+        })
       }
     }
 
@@ -74,7 +74,7 @@ async function agentLoop(messages: Message[]): Promise<void> {
     messages.push({
       role: 'user',
       content: results,
-    });
+    })
 
     // 循环继续...
   }
@@ -93,12 +93,14 @@ async function agentLoop(messages: Message[]): Promise<void> {
 ### 为什么这么简单？
 
 因为所有"智能"都在模型内部：
+
 - 模型决定调用什么工具
 - 模型决定工具参数
 - 模型决定何时停止
 - 模型决定下一步做什么
 
 代码只是：
+
 - 定义工具（告诉模型它能做什么）
 - 执行工具（把模型意图变成现实）
 - 返回结果（让模型知道发生了什么）
@@ -108,17 +110,19 @@ async function agentLoop(messages: Message[]): Promise<void> {
 只有一个 Bash 工具：
 
 ```typescript
-const TOOLS = [{
-  name: 'bash',
-  description: 'Run a shell command.',
-  input_schema: {
-    type: 'object',
-    properties: {
-      command: { type: 'string' }
+const TOOLS = [
+  {
+    name: 'bash',
+    description: 'Run a shell command.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        command: { type: 'string' },
+      },
+      required: ['command'],
     },
-    required: ['command'],
   },
-}];
+]
 ```
 
 ## 安全考虑
@@ -126,17 +130,12 @@ const TOOLS = [{
 阻止危险命令：
 
 ```typescript
-const DANGEROUS_COMMANDS = [
-  'rm -rf /',
-  'sudo',
-  'shutdown',
-  'reboot',
-];
+const DANGEROUS_COMMANDS = ['rm -rf /', 'sudo', 'shutdown', 'reboot']
 
 function runBash(command: string): string {
   for (const dangerous of DANGEROUS_COMMANDS) {
     if (command.includes(dangerous)) {
-      return `Error: Dangerous command blocked`;
+      return `Error: Dangerous command blocked`
     }
   }
   // ... 执行命令
@@ -162,6 +161,7 @@ s02 将展示：**添加工具不需要改变循环，只需要添加 handler。
 ---
 
 **Session 01 完成 ✓**
+
 - 理解了核心循环模式
 - 实现了只有 Bash 的最小 Agent
 - 运行了 REPL 测试

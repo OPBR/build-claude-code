@@ -8,59 +8,59 @@
 // ============================================================================
 
 export interface Message {
-  role: 'user' | 'assistant';
-  content: string | ContentBlock[];
+  role: 'user' | 'assistant'
+  content: string | ContentBlock[]
 }
 
-export type ContentBlock = TextBlock | ToolUseBlock | ToolResultBlock;
+export type ContentBlock = TextBlock | ToolUseBlock | ToolResultBlock
 
 export interface TextBlock {
-  type: 'text';
-  text: string;
+  type: 'text'
+  text: string
 }
 
 export interface ToolUseBlock {
-  type: 'tool_use';
-  id: string;
-  name: string;
-  input: Record<string, unknown>;
+  type: 'tool_use'
+  id: string
+  name: string
+  input: Record<string, unknown>
 }
 
 export interface ToolResultBlock {
-  type: 'tool_result';
-  tool_use_id: string;
-  content: string;
-  is_error?: boolean;
+  type: 'tool_result'
+  tool_use_id: string
+  content: string
+  is_error?: boolean
 }
 
 export interface ToolDefinition {
-  name: string;
-  description: string;
-  input_schema: ToolInputSchema;
+  name: string
+  description: string
+  input_schema: ToolInputSchema
 }
 
 export interface ToolInputSchema {
-  type: 'object';
-  properties: Record<string, ToolProperty>;
-  required?: string[];
+  type: 'object'
+  properties: Record<string, ToolProperty>
+  required?: string[]
 }
 
 export interface ToolProperty {
-  type: string;
-  description?: string;
-  enum?: string[];
-  items?: ToolProperty;
+  type: string
+  description?: string
+  enum?: string[]
+  items?: ToolProperty
 }
 
 // ============================================================================
 // 工具处理相关
 // ============================================================================
 
-export type ToolHandler = (input: Record<string, unknown>) => string | Promise<string>;
+export type ToolHandler = (input: Record<string, unknown>) => string | Promise<string>
 
 export interface ToolRegistry {
-  definitions: ToolDefinition[];
-  handlers: Record<string, ToolHandler>;
+  definitions: ToolDefinition[]
+  handlers: Record<string, ToolHandler>
 }
 
 // ============================================================================
@@ -68,10 +68,10 @@ export interface ToolRegistry {
 // ============================================================================
 
 export interface TodoItem {
-  id: string;
-  content: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  activeForm?: string;
+  id: string
+  content: string
+  status: 'pending' | 'in_progress' | 'completed'
+  activeForm?: string
 }
 
 // ============================================================================
@@ -79,14 +79,14 @@ export interface TodoItem {
 // ============================================================================
 
 export interface Task {
-  id: number;
-  subject: string;
-  description?: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  owner?: string;
-  blockedBy?: number[];
-  createdAt?: number;
-  updatedAt?: number;
+  id: number
+  subject: string
+  description?: string
+  status: 'pending' | 'in_progress' | 'completed'
+  owner?: string
+  blockedBy?: number[]
+  createdAt?: number
+  updatedAt?: number
 }
 
 // ============================================================================
@@ -94,10 +94,10 @@ export interface Task {
 // ============================================================================
 
 export interface Skill {
-  name: string;
-  meta: Record<string, string>;
-  body: string;
-  path: string;
+  name: string
+  meta: Record<string, string>
+  body: string
+  path: string
 }
 
 // ============================================================================
@@ -105,17 +105,22 @@ export interface Skill {
 // ============================================================================
 
 export interface TeamMessage {
-  type: 'message' | 'broadcast' | 'shutdown_request' | 'shutdown_response' | 'plan_approval_response';
-  from: string;
-  content: string;
-  timestamp: number;
-  extra?: Record<string, unknown>;
+  type:
+    | 'message'
+    | 'broadcast'
+    | 'shutdown_request'
+    | 'shutdown_response'
+    | 'plan_approval_response'
+  from: string
+  content: string
+  timestamp: number
+  extra?: Record<string, unknown>
 }
 
 export interface TeammateConfig {
-  name: string;
-  role: string;
-  status: 'working' | 'idle' | 'shutdown';
+  name: string
+  role: string
+  status: 'working' | 'idle' | 'shutdown'
 }
 
 // ============================================================================
@@ -123,16 +128,16 @@ export interface TeammateConfig {
 // ============================================================================
 
 export interface BackgroundTask {
-  id: string;
-  status: 'running' | 'completed' | 'error' | 'timeout';
-  command: string;
-  result?: string;
+  id: string
+  status: 'running' | 'completed' | 'error' | 'timeout'
+  command: string
+  result?: string
 }
 
 export interface BackgroundNotification {
-  task_id: string;
-  status: string;
-  result: string;
+  task_id: string
+  status: string
+  result: string
 }
 
 // ============================================================================
@@ -140,18 +145,18 @@ export interface BackgroundNotification {
 // ============================================================================
 
 export interface WorktreeEntry {
-  name: string;
-  path: string;
-  branch: string;
-  task_id?: number;
-  status: 'active' | 'removed' | 'kept';
-  created_at?: number;
+  name: string
+  path: string
+  branch: string
+  task_id?: number
+  status: 'active' | 'removed' | 'kept'
+  created_at?: number
 }
 
 export interface LifecycleEvent {
-  event: string;
-  ts: number;
-  task?: Record<string, unknown>;
-  worktree?: Record<string, unknown>;
-  error?: string;
+  event: string
+  ts: number
+  task?: Record<string, unknown>
+  worktree?: Record<string, unknown>
+  error?: string
 }

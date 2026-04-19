@@ -19,18 +19,26 @@
     "s11": "tsx src/sessions/s11-autonomous-agents.ts",
     "s12": "tsx src/sessions/s12-worktree-isolation.ts",
     "full": "tsx src/sessions/s-full-agent.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.39.0",
-    "dotenv": "^16.5.0",
-    "yaml": "^2.7.1"
+    "@anthropic-ai/sdk": "^0.90.0",
+    "dotenv": "^17.4.2",
+    "yaml": "^2.8.3"
   },
   "devDependencies": {
-    "@types/node": "^22.14.1",
-    "tsdown": "^0.11.2",
-    "tsx": "^4.19.3",
-    "typescript": "^5.8.3"
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.6.0",
+    "eslint": "^10.2.1",
+    "prettier": "^3.8.3",
+    "tsdown": "^0.21.9",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.58.2"
   },
   "packageManager": "pnpm@10.10.0",
   "engines": {

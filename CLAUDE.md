@@ -14,21 +14,21 @@
 
 ## 学习路线
 
-| 阶段 | Session | 主题 | 核心概念 |
-|------|---------|------|----------|
-| 1 | s01 | Agent Loop | 一个循环 + Bash = Agent |
-| 1 | s02 | Tool Use | 添加工具 = 添加一个 handler |
-| 2 | s03 | TodoWrite | 没有计划的代理会迷失方向 |
-| 2 | s04 | Subagent | 大任务拆分，子任务获得干净的上下文 |
-| 2 | s05 | Skills | 按需加载知识，不要 upfront |
-| 3 | s06 | Context Compact | 三层压缩策略实现无限会话 |
-| 3 | s07 | Task System | 文件持久化任务板 + 依赖图 |
-| 3 | s08 | Background Tasks | 后台执行 + 通知队列 |
-| 4 | s09 | Agent Teams | JSONL 邮箱通信的多代理 |
-| 4 | s10 | Team Protocols | 关闭/审批协议 |
-| 4 | s11 | Autonomous Agents | 代理自动发现任务 |
-| 5 | s12 | Worktree Isolation | 目录级隔离执行 |
-| 6 | s_full | Full Agent | 所有机制整合 |
+| 阶段 | Session | 主题               | 核心概念                           |
+| ---- | ------- | ------------------ | ---------------------------------- |
+| 1    | s01     | Agent Loop         | 一个循环 + Bash = Agent            |
+| 1    | s02     | Tool Use           | 添加工具 = 添加一个 handler        |
+| 2    | s03     | TodoWrite          | 没有计划的代理会迷失方向           |
+| 2    | s04     | Subagent           | 大任务拆分，子任务获得干净的上下文 |
+| 2    | s05     | Skills             | 按需加载知识，不要 upfront         |
+| 3    | s06     | Context Compact    | 三层压缩策略实现无限会话           |
+| 3    | s07     | Task System        | 文件持久化任务板 + 依赖图          |
+| 3    | s08     | Background Tasks   | 后台执行 + 通知队列                |
+| 4    | s09     | Agent Teams        | JSONL 邮箱通信的多代理             |
+| 4    | s10     | Team Protocols     | 关闭/审批协议                      |
+| 4    | s11     | Autonomous Agents  | 代理自动发现任务                   |
+| 5    | s12     | Worktree Isolation | 目录级隔离执行                     |
+| 6    | s_full  | Full Agent         | 所有机制整合                       |
 
 ## 目录结构
 
@@ -89,16 +89,16 @@ async function agentLoop(messages: Message[]): Promise<void> {
       system: SYSTEM,
       messages: messages,
       tools: TOOLS,
-    });
+    })
 
-    messages.push({ role: 'assistant', content: response.content });
+    messages.push({ role: 'assistant', content: response.content })
 
     if (response.stop_reason !== 'tool_use') {
-      return; // 模型决定停止
+      return // 模型决定停止
     }
 
-    const results = await executeTools(response.content);
-    messages.push({ role: 'user', content: results });
+    const results = await executeTools(response.content)
+    messages.push({ role: 'user', content: results })
     // 循环继续...
   }
 }
@@ -141,6 +141,7 @@ MODEL_ID=claude-sonnet-4-20250514
 ## 学习方式
 
 每个 session 在 `learn/` 目录下有详细的学习笔记，包含：
+
 - 核心概念解释
 - ASCII 架构图
 - 实现代码
