@@ -4,7 +4,7 @@
  */
 
 import { agentLoop } from '../core/agent-loop'
-import * as readline from 'node:readline'
+import readline from 'node:readline'
 import type { Message } from '../core/types'
 import 'dotenv/config'
 

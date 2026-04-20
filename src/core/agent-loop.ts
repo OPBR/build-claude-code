@@ -5,8 +5,10 @@
 
 import Anthropic from '@anthropic-ai/sdk'
 import { execSync } from 'child_process'
-import * as readline from 'node:readline'
+import readline from 'node:readline'
 import 'dotenv/config'
+import { config } from 'dotenv'
+config({ override: true }) // 强制覆盖系统环境变量
 import type { Message, ContentBlock, ToolResultBlock } from './types'
 
 // ============================================================================
