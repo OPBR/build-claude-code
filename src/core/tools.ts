@@ -42,11 +42,15 @@ export const runBash: ToolHandler = (input) => {
   }
 
   try {
+    // Windows 使用 PowerShell (UTF-8)，其他平台使用默认 shell
+    const shell = process.platform === 'win32' ? 'powershell.exe' : undefined
+
     const result = execSync(command, {
       cwd: WORKDIR,
       encoding: 'utf-8',
       timeout: 120000,
       maxBuffer: 50 * 1024 * 1024,
+      shell,
     })
     return result.trim() || '(no output)'
   } catch (error: unknown) {

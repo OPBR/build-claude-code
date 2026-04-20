@@ -139,6 +139,7 @@ MODEL_ID=claude-sonnet-4-20250514
 ```
 
 **国内推荐提供商** (支持 Anthropic 兼容 API)：
+
 - 智谱 GLM: `https://open.bigmodel.cn/api/anthropic` + `glm-5`
 - DeepSeek: `https://api.deepseek.com/anthropic` + `deepseek-chat`
 - Kimi: `https://api.moonshot.cn/anthropic` + `kimi-k2.5`
@@ -174,6 +175,7 @@ MODEL_ID=claude-sonnet-4-20250514
 ```
 
 典型确认问题：
+
 - 当前实现是否理解清楚？
 - 是否需要补充文档或注释？
 - 是否需要调整代码结构？
