@@ -50,6 +50,8 @@ export interface ToolProperty {
   description?: string
   enum?: string[]
   items?: ToolProperty
+  properties?: Record<string, ToolProperty> // s03: 支持嵌套对象
+  required?: string[] // s03: 支持嵌套对象的 required
 }
 
 // ============================================================================

@@ -9,6 +9,7 @@ import 'dotenv/config'
 import { config } from 'dotenv'
 config({ override: true })
 import type { Message, ContentBlock, ToolResultBlock, ToolDefinition, ToolHandler } from './types'
+import type { TodoManager } from '../planning/todo'
 
 // ============================================================================
 // Windows 编码修复
@@ -38,22 +39,32 @@ export const client = new Anthropic({
 })
 
 // ============================================================================
+// Agent Loop Options
+// ============================================================================
+
+interface AgentLoopOptions {
+  tools: ToolDefinition[]
+  handlers: Record<string, ToolHandler>
+  system?: string
+  todoManager?: TodoManager // s03: 可选的 TodoManager
+}
+
+// ============================================================================
 // Agent Loop - 核心
 // ============================================================================
 
 /**
  * 通用 Agent 循环
  * @param messages 消息历史
- * @param tools 工具定义列表
- * @param handlers 工具处理函数映射
- * @param system 系统提示词
+ * @param options 配置选项
  */
-export async function agentLoop(
-  messages: Message[],
-  tools: ToolDefinition[],
-  handlers: Record<string, ToolHandler>,
-  system: string = `You are a coding agent at ${WORKDIR}. Use tools to solve tasks. Act, don't explain.`,
-): Promise<void> {
+export async function agentLoop(messages: Message[], options: AgentLoopOptions): Promise<void> {
+  const { tools, handlers, system, todoManager } = options
+
+  // 默认系统提示词
+  const systemPrompt =
+    system ?? `You are a coding agent at ${WORKDIR}. Use tools to solve tasks. Act, don't explain.`
+
   // 将 ToolDefinition 转换为 Anthropic SDK 格式
   const anthropicTools: Anthropic.Messages.Tool[] = tools.map((t) => ({
     name: t.name,
@@ -65,7 +76,7 @@ export async function agentLoop(
     // 1. 调用 LLM
     const response = await client.messages.create({
       model: MODEL,
-      system,
+      system: systemPrompt,
       messages,
       tools: anthropicTools,
       max_tokens: 8000,
@@ -83,7 +94,9 @@ export async function agentLoop(
     }
 
     // 4. 执行所有工具调用（dispatch map 模式）
-    const results: ToolResultBlock[] = []
+    const results: (ToolResultBlock | { type: 'text'; text: string })[] = []
+    let usedTodo = false // s03: 记录是否使用了 todo 工具
+
     for (const block of response.content) {
       if (block.type === 'tool_use') {
         const toolBlock = block as Anthropic.Messages.ToolUseBlock
@@ -115,13 +128,35 @@ export async function agentLoop(
           tool_use_id: toolBlock.id,
           content: output,
         })
+
+        // s03: 记录是否使用了 todo
+        if (toolBlock.name === 'todo') {
+          usedTodo = true
+        }
+      }
+    }
+
+    // s03: 提醒机制
+    if (todoManager) {
+      if (usedTodo) {
+        // 使用了 todo，重置计数
+        // (TodoManager.update 已经重置了 roundsSinceUpdate)
+      } else {
+        // 没有使用 todo，记录一轮
+        todoManager.noteRoundWithoutUpdate()
+        const reminder = todoManager.reminder()
+        if (reminder) {
+          // 提醒插入到 results 开头
+          results.unshift({ type: 'text', text: reminder })
+          console.log(`\x1b[35m${reminder}\x1b[0m`)
+        }
       }
     }
 
     // 5. 将结果追加回消息
     messages.push({
       role: 'user',
-      content: results,
+      content: results as ContentBlock[],
     })
 
     // 循环继续...

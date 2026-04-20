@@ -5,6 +5,7 @@
 > **"Add tools = add a handler"**
 
 s01 只有 bash 工具，所有操作都走 shell。问题是：
+
 - `cat` 截断不可预测
 - `sed` 遇到特殊字符就崩
 - 每次 bash 调用都是不受约束的安全面
@@ -152,6 +153,7 @@ export function safePath(relativePath: string): string {
 ```
 
 逻辑：
+
 1. 把相对路径转成绝对路径
 2. 检查是否还在工作目录内
 3. 不在？拒绝执行
@@ -190,7 +192,7 @@ export const runBash: ToolHandler = (input) => {
 
 ```typescript
 export const runRead: ToolHandler = async (input) => {
-  const filePath = safePath(input.path as string)  // 沙箱检查
+  const filePath = safePath(input.path as string) // 沙箱检查
   const limit = input.limit as number | undefined
 
   const content = await fs.readFile(filePath, 'utf-8')
@@ -211,7 +213,7 @@ export const runRead: ToolHandler = async (input) => {
 
 ```typescript
 export const runWrite: ToolHandler = async (input) => {
-  const filePath = safePath(input.path as string)  // 沙箱检查
+  const filePath = safePath(input.path as string) // 沙箱检查
   const content = input.content as string
 
   // 自动创建目录
@@ -247,12 +249,12 @@ export const runEdit: ToolHandler = async (input) => {
 
 ## 相对 s01 的变更
 
-| 组件           | 之前 (s01)         | 之后 (s02)                     |
-|----------------|--------------------|--------------------------------|
-| Tools          | 1 (仅 bash)        | 4 (bash, read, write, edit)    |
-| Dispatch       | 硬编码 bash 调用   | `BASE_HANDLERS` 字典           |
-| 路径安全       | 无                 | `safePath()` 沙箱              |
-| Agent loop     | 不变               | 不变                           |
+| 组件       | 之前 (s01)       | 之后 (s02)                  |
+| ---------- | ---------------- | --------------------------- |
+| Tools      | 1 (仅 bash)      | 4 (bash, read, write, edit) |
+| Dispatch   | 硬编码 bash 调用 | `BASE_HANDLERS` 字典        |
+| 路径安全   | 无               | `safePath()` 沙箱           |
+| Agent loop | 不变             | 不变                        |
 
 ## 运行测试
 
@@ -271,16 +273,16 @@ s02 >> q
 
 ```typescript
 // s01: 只使用 bash
-const S01_TOOLS = [BASE_TOOLS[0]]  // 只有 bash
+const S01_TOOLS = [BASE_TOOLS[0]] // 只有 bash
 const S01_HANDLERS = { bash: runBash }
 
 // s02: 使用全部 4 个工具
-const S02_TOOLS = BASE_TOOLS       // bash + read + write + edit
+const S02_TOOLS = BASE_TOOLS // bash + read + write + edit
 const S02_HANDLERS = BASE_HANDLERS
 
 // 循环调用方式完全一样
-await agentLoop(history, S01_TOOLS, S01_HANDLERS)  // s01
-await agentLoop(history, S02_TOOLS, S02_HANDLERS)  // s02
+await agentLoop(history, S01_TOOLS, S01_HANDLERS) // s01
+await agentLoop(history, S02_TOOLS, S02_HANDLERS) // s02
 ```
 
 ## 进阶：消息规范化
@@ -290,6 +292,7 @@ await agentLoop(history, S02_TOOLS, S02_HANDLERS)  // s02
 ### 为什么需要
 
 API 协议有三条硬性约束：
+
 1. 每个 `tool_use` 块**必须**有匹配的 `tool_result`
 2. `user` / `assistant` 消息必须**严格交替**
 3. 只接受协议定义的字段
