@@ -48,7 +48,10 @@ async function main() {
       history.push({ role: 'user', content: query })
 
       try {
-        await agentLoop(history, S01_TOOLS, S01_HANDLERS)
+        await agentLoop(history, {
+          tools: S01_TOOLS,
+          handlers: S01_HANDLERS,
+        })
         const reply = extractTextReply(history)
         if (reply) console.log(reply)
       } catch (error) {

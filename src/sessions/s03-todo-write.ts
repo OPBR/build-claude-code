@@ -1,17 +1,24 @@
 /**
- * s02 Session 入口 - Tool Use
- * 使用 dispatch map 调用多个工具
+ * s03 Session 入口 - TodoWrite
+ * 会话内计划管理，让 Agent 有规划能力
  */
 
 import readline from 'node:readline'
 import { agentLoop, extractTextReply, WORKDIR } from '../core/agent-loop'
 import { BASE_TOOLS, BASE_HANDLERS } from '../core/tools'
-import type { Message } from '../core/types'
+import { TodoManager, TODO_TOOL_DEFINITION, createTodoHandler } from '../planning/todo'
+import type { Message, ToolDefinition, ToolHandler } from '../core/types'
+
+// s03 系统提示词（强调使用 todo 工具）
+const S03_SYSTEM = `You are a coding agent at ${WORKDIR}.
+Use the todo tool for multi-step work.
+Keep exactly one step in_progress when a task has multiple steps.
+Refresh the plan as work advances. Prefer tools over prose.`
 
 async function main() {
   console.log('\x1b[36m╔════════════════════════════════════╗\x1b[0m')
-  console.log('\x1b[36m║  s02 - Tool Use                    ║\x1b[0m')
-  console.log('\x1b[36m║  "Add tools = add a handler"       ║\x1b[0m')
+  console.log('\x1b[36m║  s03 - TodoWrite                   ║\x1b[0m')
+  console.log('\x1b[36m║  "No plan, agent drifts"           ║\x1b[0m')
   console.log('\x1b[36m╚════════════════════════════════════╝\x1b[0m')
   console.log()
 
@@ -22,8 +29,18 @@ async function main() {
     process.exit(1)
   }
 
+  // 初始化 TodoManager
+  const todoManager = new TodoManager()
+
+  // s03 工具：基础 4 个 + todo
+  const S03_TOOLS: ToolDefinition[] = [...BASE_TOOLS, TODO_TOOL_DEFINITION]
+  const S03_HANDLERS: Record<string, ToolHandler> = {
+    ...BASE_HANDLERS,
+    todo: createTodoHandler(todoManager),
+  }
+
   console.log(`Working directory: ${WORKDIR}`)
-  console.log('Tools: bash, read_file, write_file, edit_file')
+  console.log('Tools: bash, read_file, write_file, edit_file, todo')
   console.log('Type "q" or "exit" to quit.\n')
 
   const history: Message[] = []
@@ -33,7 +50,7 @@ async function main() {
   })
 
   const prompt = (): void => {
-    rl.question('\x1b[36ms02 >> \x1b[0m', async (query: string) => {
+    rl.question('\x1b[36ms03 >> \x1b[0m', async (query: string) => {
       const trimmed = query.trim().toLowerCase()
 
       if (trimmed === 'q' || trimmed === 'exit' || trimmed === '') {
@@ -46,8 +63,10 @@ async function main() {
 
       try {
         await agentLoop(history, {
-          tools: BASE_TOOLS,
-          handlers: BASE_HANDLERS,
+          tools: S03_TOOLS,
+          handlers: S03_HANDLERS,
+          system: S03_SYSTEM,
+          todoManager, // 传入 TodoManager 以启用提醒机制
         })
         const reply = extractTextReply(history)
         if (reply) console.log(reply)
