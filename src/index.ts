@@ -26,8 +26,10 @@ export type {
   LifecycleEvent,
 } from './core/types'
 
-// 函数导出
-export { agentLoop } from './core/agent-loop'
+// 核心函数导出
+export { agentLoop, extractTextReply, WORKDIR, MODEL, client } from './core/agent-loop'
+
+// 工具导出
 export {
   BASE_TOOLS,
   BASE_HANDLERS,
@@ -36,5 +38,4 @@ export {
   runWrite,
   runEdit,
   safePath,
-  WORKDIR,
 } from './core/tools'

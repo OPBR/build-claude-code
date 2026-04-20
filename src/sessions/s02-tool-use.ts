@@ -1,21 +1,17 @@
 /**
- * s01 Session 入口 - 最小 Agent Loop
- * 只有一个 bash 工具，展示核心循环模式
+ * s02 Session 入口 - Tool Use
+ * 使用 dispatch map 调用多个工具
  */
 
 import readline from 'node:readline'
 import { agentLoop, extractTextReply, WORKDIR } from '../core/agent-loop'
-import { BASE_TOOLS, runBash } from '../core/tools'
-import type { Message, ToolDefinition, ToolHandler } from '../core/types'
-
-// s01 只使用 bash 工具（最小版本）
-const S01_TOOLS: ToolDefinition[] = [BASE_TOOLS[0]] // 只有 bash
-const S01_HANDLERS: Record<string, ToolHandler> = { bash: runBash }
+import { BASE_TOOLS, BASE_HANDLERS } from '../core/tools'
+import type { Message } from '../core/types'
 
 async function main() {
   console.log('\x1b[36m╔════════════════════════════════════╗\x1b[0m')
-  console.log('\x1b[36m║  s01 - Agent Loop                  ║\x1b[0m')
-  console.log('\x1b[36m║  "One loop & Bash is all you need" ║\x1b[0m')
+  console.log('\x1b[36m║  s02 - Tool Use                    ║\x1b[0m')
+  console.log('\x1b[36m║  "Add tools = add a handler"       ║\x1b[0m')
   console.log('\x1b[36m╚════════════════════════════════════╝\x1b[0m')
   console.log()
 
@@ -27,6 +23,7 @@ async function main() {
   }
 
   console.log(`Working directory: ${WORKDIR}`)
+  console.log('Tools: bash, read_file, write_file, edit_file')
   console.log('Type "q" or "exit" to quit.\n')
 
   const history: Message[] = []
@@ -36,7 +33,7 @@ async function main() {
   })
 
   const prompt = (): void => {
-    rl.question('\x1b[36ms01 >> \x1b[0m', async (query: string) => {
+    rl.question('\x1b[36ms02 >> \x1b[0m', async (query: string) => {
       const trimmed = query.trim().toLowerCase()
 
       if (trimmed === 'q' || trimmed === 'exit' || trimmed === '') {
@@ -48,7 +45,7 @@ async function main() {
       history.push({ role: 'user', content: query })
 
       try {
-        await agentLoop(history, S01_TOOLS, S01_HANDLERS)
+        await agentLoop(history, BASE_TOOLS, BASE_HANDLERS)
         const reply = extractTextReply(history)
         if (reply) console.log(reply)
       } catch (error) {
