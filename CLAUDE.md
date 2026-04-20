@@ -138,6 +138,13 @@ ANTHROPIC_BASE_URL=https://your-custom-endpoint.com
 MODEL_ID=claude-sonnet-4-20250514
 ```
 
+**国内推荐提供商** (支持 Anthropic 兼容 API)：
+- 智谱 GLM: `https://open.bigmodel.cn/api/anthropic` + `glm-5`
+- DeepSeek: `https://api.deepseek.com/anthropic` + `deepseek-chat`
+- Kimi: `https://api.moonshot.cn/anthropic` + `kimi-k2.5`
+
+**注意**: 阿里云百炼目前不支持 Anthropic 兼容模式，需要使用 OpenAI SDK。
+
 ## 学习方式
 
 每个 session 在 `learn/` 目录下有详细的学习笔记，包含：
@@ -148,6 +155,29 @@ MODEL_ID=claude-sonnet-4-20250514
 - 运行测试
 
 我们按顺序逐个实现，每一步都可以独立运行和测试。
+
+## 协作规范
+
+### 关键节点确认机制
+
+在每个重要阶段完成后，我会询问你是否有问题或需要调整：
+
+1. **Session 完成后**: 每个 session (s01, s02, ...) 实现完成后会确认
+2. **阶段完成后**: 每个大阶段 (阶段1-6) 完成后会确认
+3. **重大决策前**: 添加新依赖、改变架构、引入新概念前会确认
+4. **测试失败后**: 如果测试无法通过，会确认下一步方案
+
+### 确认流程
+
+```
+完成当前任务 → 总结已完成内容 → 询问 "当前有没有什么问题？" → 等待用户反馈 → 决定下一步
+```
+
+典型确认问题：
+- 当前实现是否理解清楚？
+- 是否需要补充文档或注释？
+- 是否需要调整代码结构？
+- 下一步是否继续还是先处理其他事项？
 
 ---
 

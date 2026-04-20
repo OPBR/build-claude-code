@@ -10,15 +10,33 @@ import 'dotenv/config'
 import type { Message, ContentBlock, ToolResultBlock } from './types'
 
 // ============================================================================
+// Windows 编码修复
+// ============================================================================
+// 在进程启动时设置控制台为 UTF-8 模式
+if (process.platform === 'win32') {
+  // 使用 chcp 命令设置控制台编码为 UTF-8
+  try {
+    execSync('chcp 65001 >nul 2>&1', { shell: 'cmd.exe' })
+  } catch {
+    // ignore
+  }
+}
+
+// ============================================================================
 // 配置
 // ============================================================================
 
 const WORKDIR = process.cwd()
-const MODEL = process.env.MODEL_ID || 'claude-sonnet-4-20250514'
+// 支持多种模型环境变量名
+const MODEL = process.env.MODEL_ID || process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-20250514'
+
+// 支持 ANTHROPIC_API_KEY 或 ANTHROPIC_AUTH_TOKEN
+const authToken = process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN
+const baseURL = process.env.ANTHROPIC_BASE_URL
 
 const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-  baseURL: process.env.ANTHROPIC_BASE_URL,
+  apiKey: authToken, // 使用 apiKey 发送 X-Api-Key header
+  baseURL,
 })
 
 const SYSTEM = `You are a coding agent at ${WORKDIR}. Use bash to solve tasks. Act, don't explain.`
@@ -56,11 +74,16 @@ function runBash(command: string): string {
   }
 
   try {
-    const result = execSync(command, {
+    // Windows 使用 PowerShell (UTF-8)，其他平台使用默认 shell
+    const shell = process.platform === 'win32' ? 'powershell.exe' : undefined
+    const shellCommand = process.platform === 'win32' ? command : command
+
+    const result = execSync(shellCommand, {
       cwd: WORKDIR,
       encoding: 'utf-8',
       timeout: 120000, // 120秒超时
       maxBuffer: 50 * 1024 * 1024, // 50MB
+      shell,
     })
     return result.trim() || '(no output)'
   } catch (error: unknown) {
