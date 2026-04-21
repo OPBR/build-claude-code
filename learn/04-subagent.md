@@ -34,11 +34,11 @@ Subagent context is discarded.
 ```typescript
 // src/core/types.ts
 interface SubagentContext {
-  messages: Message[]       // 子 Agent 自己的上下文（从空白开始）
-  tools: ToolDefinition[]   // 子 Agent 可用的工具（过滤后的）
-  handlers: Record<string, ToolHandler>  // 工具执行函数
-  maxTurns: number          // 最大轮数，防止无限跑
-  systemPrompt: string      // 子 Agent 的系统提示词
+  messages: Message[] // 子 Agent 自己的上下文（从空白开始）
+  tools: ToolDefinition[] // 子 Agent 可用的工具（过滤后的）
+  handlers: Record<string, ToolHandler> // 工具执行函数
+  maxTurns: number // 最大轮数，防止无限跑
+  systemPrompt: string // 子 Agent 的系统提示词
 }
 ```
 
@@ -52,8 +52,8 @@ const PARENT_TOOLS = [...BASE_TOOLS, TASK_TOOL]
 const PARENT_HANDLERS = { ...BASE_HANDLERS, task: createTaskHandler() }
 
 // 子 Agent 工具：只有 base（不含 task）
-const CHILD_TOOLS = BASE_TOOLS  // bash, read_file, write_file, edit_file
-const CHILD_HANDLERS = BASE_HANDLERS  // 没有 task
+const CHILD_TOOLS = BASE_TOOLS // bash, read_file, write_file, edit_file
+const CHILD_HANDLERS = BASE_HANDLERS // 没有 task
 ```
 
 ```
@@ -112,7 +112,7 @@ export async function runSubagent(prompt: string): Promise<string> {
     context.messages.push({ role: 'assistant', content: response.content })
 
     if (response.stop_reason !== 'tool_use') {
-      break  // 子 Agent 做完了
+      break // 子 Agent 做完了
     }
 
     // 执行工具调用
@@ -127,12 +127,12 @@ export async function runSubagent(prompt: string): Promise<string> {
 
 四个步骤：
 
-| 步骤 | 做什么 |
-|------|--------|
-| 1 | 空白 messages 启动 |
-| 2 | 配置隔离的工具集（不含 task） |
-| 3 | 循环执行，最多 30 轮 |
-| 4 | 只返回摘要，丢弃中间过程 |
+| 步骤 | 做什么                        |
+| ---- | ----------------------------- |
+| 1    | 空白 messages 启动            |
+| 2    | 配置隔离的工具集（不含 task） |
+| 3    | 循环执行，最多 30 轮          |
+| 4    | 只返回摘要，丢弃中间过程      |
 
 ## 智能判断：何时用 task
 
@@ -159,24 +159,26 @@ The task tool spawns a subagent with fresh messages. This keeps the parent conte
 ```
 
 **用 task**：
+
 - 分析/搜索多个文件
 - 查找代码库中的模式
 - 中间过程是噪声，只要结论
 
 **不用 task**：
+
 - 单文件操作
 - 简单 bash 命令
 - 需要当前对话上下文的任务
 
 ## 相对 s03 的变更
 
-| 组件       | s03                          | s04                          |
-| ---------- | ---------------------------- | ---------------------------- |
-| Tools      | 5 (base + todo)              | 5 (base + task)              |
-| Handlers   | BASE_HANDLERS + todo handler | BASE_HANDLERS + task handler |
-| 核心机制   | 计划状态外显                 | 上下文隔离                   |
-| 解决问题   | Agent 跑偏                   | 上下文污染                   |
-| 返回方式   | 渲染计划文本                 | 只返回摘要                   |
+| 组件     | s03                          | s04                          |
+| -------- | ---------------------------- | ---------------------------- |
+| Tools    | 5 (base + todo)              | 5 (base + task)              |
+| Handlers | BASE_HANDLERS + todo handler | BASE_HANDLERS + task handler |
+| 核心机制 | 计划状态外显                 | 上下文隔离                   |
+| 解决问题 | Agent 跑偏                   | 上下文污染                   |
+| 返回方式 | 渲染计划文本                 | 只返回摘要                   |
 
 **s03 解决"忘记做什么"，s04 解决"做过的事堆在上下文里"。两者互补。**
 
@@ -223,12 +225,12 @@ const MAX_SUBAGENT_TURNS = 30
 
 s04 是**一次性子任务隔离**，不是多 Agent 系统：
 
-| 特性   | s04 Subagent          | s09-s11 Agent Teams    |
-| ------ | --------------------- | ---------------------- |
-| 持久性 | 一次性（任务完成丢弃） | 长期 teammate          |
-| 角色   | 无角色区分            | 有角色（explorer 等）  |
-| 通信   | 单向返回              | 双向消息通道           |
-| 目的   | 隔离噪声              | 协作分工               |
+| 特性   | s04 Subagent           | s09-s11 Agent Teams   |
+| ------ | ---------------------- | --------------------- |
+| 持久性 | 一次性（任务完成丢弃） | 长期 teammate         |
+| 角色   | 无角色区分             | 有角色（explorer 等） |
+| 通信   | 单向返回               | 双向消息通道          |
+| 目的   | 隔离噪声               | 协作分工              |
 
 先做一次性隔离，再做长期协作。
 

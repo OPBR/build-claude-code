@@ -107,11 +107,17 @@ export interface Task {
 // Skill 相关 (s05)
 // ============================================================================
 
-export interface Skill {
-  name: string
-  meta: Record<string, string>
-  body: string
-  path: string
+/** Skill 元信息（轻量，用于目录展示） */
+export interface SkillManifest {
+  name: string // skill 名称
+  description: string // 一句话描述
+  path: string // 文件路径
+}
+
+/** Skill 完整内容（按需加载） */
+export interface SkillDocument {
+  manifest: SkillManifest // 元信息
+  body: string // 完整正文
 }
 
 // ============================================================================
