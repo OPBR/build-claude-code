@@ -170,8 +170,3 @@ pnpm format:check # Prettier 检查
 ## License
 
 MIT
-
----
-
-**Agency comes from the model. The harness makes agency real.**
-**Build great harnesses. The model will do the rest.**
