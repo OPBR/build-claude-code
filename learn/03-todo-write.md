@@ -46,16 +46,16 @@ TodoManager 在循环外维护一份计划状态。模型通过 `todo` 工具更
 ```typescript
 // src/core/types.ts
 interface TodoItem {
-  id: string                // 条目编号
-  content: string           // 这一步要做什么
+  id: string // 条目编号
+  content: string // 这一步要做什么
   status: 'pending' | 'in_progress' | 'completed'
-  activeForm?: string       // 进行时的描述（可选）
+  activeForm?: string // 进行时的描述（可选）
 }
 
 // src/planning/todo.ts
 interface PlanningState {
   items: TodoItem[]
-  roundsSinceUpdate: number  // 多轮没更新了
+  roundsSinceUpdate: number // 多轮没更新了
 }
 ```
 
@@ -71,17 +71,17 @@ interface PlanningState {
 
 ```typescript
 // ❌ 逐条操作（模型需要记 id）
-todo_add("读文件A")       // id=1
-todo_mark_complete(1)     // 记住 id
-todo_add("读文件B")       // id=2
+todo_add('读文件A') // id=1
+todo_mark_complete(1) // 记住 id
+todo_add('读文件B') // id=2
 
 // ✅ 整份重写（模型只需发完整状态）
 todo({
   items: [
-    {content: "读文件A", status: "completed"},
-    {content: "读文件B", status: "in_progress"},
-    {content: "写报告", status: "pending"}
-  ]
+    { content: '读文件A', status: 'completed' },
+    { content: '读文件B', status: 'in_progress' },
+    { content: '写报告', status: 'pending' },
+  ],
 })
 ```
 
@@ -160,7 +160,7 @@ export const TODO_TOOL_DEFINITION: ToolDefinition = {
 export function createTodoHandler(manager: TodoManager) {
   return (input: Record<string, unknown>): string => {
     const items = input.items as unknown[]
-    return manager.update(items)  // ← 调用 update()
+    return manager.update(items) // ← 调用 update()
   }
 }
 ```
@@ -175,7 +175,7 @@ interface AgentLoopOptions {
   tools: ToolDefinition[]
   handlers: Record<string, ToolHandler>
   system?: string
-  todoManager?: TodoManager  // <-- 新增：可选的 TodoManager
+  todoManager?: TodoManager // <-- 新增：可选的 TodoManager
 }
 
 export async function agentLoop(messages: Message[], options: AgentLoopOptions) {
@@ -245,13 +245,13 @@ handler 内部调用 manager.update()
 
 ## 相对 s02 的变更
 
-| 组件       | s02                    | s03                            |
-| ---------- | ---------------------- | ------------------------------ |
-| Tools      | 4 (bash + 文件操作)    | 5 (+ todo)                     |
-| Handlers   | BASE_HANDLERS          | BASE_HANDLERS + todo handler   |
-| 状态管理   | 无                     | TodoManager                    |
-| 提醒机制   | 无                     | 3轮不更新就提醒                |
-| Agent loop | 不变                   | 新增 todoManager 参数          |
+| 组件       | s02                 | s03                          |
+| ---------- | ------------------- | ---------------------------- |
+| Tools      | 4 (bash + 文件操作) | 5 (+ todo)                   |
+| Handlers   | BASE_HANDLERS       | BASE_HANDLERS + todo handler |
+| 状态管理   | 无                  | TodoManager                  |
+| 提醒机制   | 无                  | 3轮不更新就提醒              |
+| Agent loop | 不变                | 新增 todoManager 参数        |
 
 **核心循环不变。只加了 todo 工具和 TodoManager。**
 
@@ -296,12 +296,12 @@ s03 >> q
 
 s03 是**会话内轻量计划**，不是持久化任务系统：
 
-| 特性       | s03 TodoWrite          | s12 Task System        |
-| ---------- | ---------------------- | ---------------------- |
-| 持久化     | 无（会话结束就消失）   | 文件持久化             |
-| 依赖图     | 无                     | 支持依赖关系           |
-| 跨会话     | 不支持                 | 支持                   |
-| 目的       | 帮助模型聚焦下一步     | 管理长期任务           |
+| 特性   | s03 TodoWrite        | s12 Task System |
+| ------ | -------------------- | --------------- |
+| 持久化 | 无（会话结束就消失） | 文件持久化      |
+| 依赖图 | 无                   | 支持依赖关系    |
+| 跨会话 | 不支持               | 支持            |
+| 目的   | 帮助模型聚焦下一步   | 管理长期任务    |
 
 混淆这两者会让初学者迷失方向。
 
