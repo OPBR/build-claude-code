@@ -80,6 +80,12 @@ async function agentLoopWithCompact(
   state: CompactState,
   tools: ToolDefinition[],
 ): Promise<void> {
+  /* 类型兼容，纯 map,无逻辑 */
+  const anthropicTools = tools.map((t) => ({
+    name: t.name,
+    description: t.description,
+    input_schema: t.input_schema as Anthropic.Messages.Tool.InputSchema,
+  }))
   while (true) {
     // 每轮开始前做微压缩
     messages = microCompact(messages)
@@ -89,13 +95,6 @@ async function agentLoopWithCompact(
       console.log('[auto compact]')
       messages = await compactHistory(messages, state)
     }
-
-    // 调用模型
-    const anthropicTools = tools.map((t) => ({
-      name: t.name,
-      description: t.description,
-      input_schema: t.input_schema as Anthropic.Messages.Tool.InputSchema,
-    }))
 
     const response = await client.messages.create({
       model: MODEL,
