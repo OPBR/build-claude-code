@@ -6,7 +6,7 @@
 
 ## 技术栈
 
-- **语言**: TypeScript 5.x
+- **语言**: TypeScript 6.x
 - **构建**: tsdown (现代化的 TypeScript 构建工具)
 - **包管理**: pnpm
 - **LLM SDK**: @anthropic-ai/sdk (官方 Node.js SDK)
@@ -14,21 +14,28 @@
 
 ## 学习路线
 
-| 阶段 | Session | 主题               | 核心概念                           |
-| ---- | ------- | ------------------ | ---------------------------------- |
-| 1    | s01     | Agent Loop         | 一个循环 + Bash = Agent            |
-| 1    | s02     | Tool Use           | 添加工具 = 添加一个 handler        |
-| 2    | s03     | TodoWrite          | 没有计划的代理会迷失方向           |
-| 2    | s04     | Subagent           | 大任务拆分，子任务获得干净的上下文 |
-| 2    | s05     | Skills             | 按需加载知识，不要 upfront         |
-| 3    | s06     | Context Compact    | 三层压缩策略实现无限会话           |
-| 3    | s07     | Task System        | 文件持久化任务板 + 依赖图          |
-| 3    | s08     | Background Tasks   | 后台执行 + 通知队列                |
-| 4    | s09     | Agent Teams        | JSONL 邮箱通信的多代理             |
-| 4    | s10     | Team Protocols     | 关闭/审批协议                      |
-| 4    | s11     | Autonomous Agents  | 代理自动发现任务                   |
-| 5    | s12     | Worktree Isolation | 目录级隔离执行                     |
-| 6    | s_full  | Full Agent         | 所有机制整合                       |
+| 阶段 | Session | 主题                | 核心概念                             |
+| ---- | ------- | ------------------- | ------------------------------------ |
+| 1    | s01     | Agent Loop          | 一个循环 + Bash = Agent              |
+| 1    | s02     | Tool Use            | 添加工具 = 添加一个 handler          |
+| 2    | s03     | TodoWrite           | 没有计划的代理会迷失方向             |
+| 2    | s04     | Subagent            | 大任务拆分，子任务获得干净的上下文   |
+| 2    | s05     | Skills              | 按需加载知识，不要 upfront           |
+| 3    | s06     | Context Compact     | 三层压缩策略实现无限会话             |
+| 3    | s07     | Permission System   | 工具执行前的安全检查管道             |
+| 3    | s08     | Hook System         | 不改主循环也能在固定时机插入行为     |
+| 4    | s09     | Memory System       | 跨会话保存有价值的信息               |
+| 4    | s10     | System Prompt       | 动态组装系统提示词                   |
+| 4    | s11     | Error Recovery      | 错误分类 + 恢复路径                  |
+| 5    | s12     | Task System         | 文件持久化任务板 + 依赖图            |
+| 5    | s13     | Background Tasks    | 后台执行 + 通知队列                  |
+| 5    | s14     | Cron Scheduler      | 定时任务调度                         |
+| 6    | s15     | Agent Teams         | JSONL 邮箱通信的多代理               |
+| 6    | s16     | Team Protocols      | 关闭/审批协议                        |
+| 6    | s17     | Autonomous Agents   | 代理自动发现任务                     |
+| 6    | s18     | Worktree Isolation  | 目录级隔离执行                       |
+| 7    | s19     | MCP Plugin          | 模型上下文协议插件                   |
+| 8    | s_full  | Full Agent          | 所有机制整合                         |
 
 ## 目录结构
 
@@ -50,17 +57,29 @@ build-claude-code/
 │   │   └── skill-loader.ts # s05: 技能加载
 │   ├── persistence/
 │   │   ├── compact.ts     # s06: 上下文压缩
-│   │   ├── task-manager.ts # s07: 任务系统
-│   │   └── background.ts  # s08: 后台任务
+│   │   ├── permission.ts  # s07: 权限系统
+│   │   ├── hook.ts        # s08: Hook 系统
+│   │   ├── memory.ts      # s09: 记忆系统
+│   │   ├── prompt.ts      # s10: 系统提示词
+│   │   ├── recovery.ts    # s11: 错误恢复
+│   │   ├── task-manager.ts # s12: 任务系统
+│   │   ├── background.ts  # s13: 后台任务
+│   │   └── cron.ts        # s14: 定时调度
 │   ├── team/
-│   │   ├── message-bus.ts # s09: 消息总线
-│   │   ├── teammate.ts    # s09/s11: 队友代理
-│   │   ├── protocols.ts   # s10: 协议
-│   │   └── autonomous.ts  # s11: 自主代理
-│   ├── isolation/
-│   │   └── worktree.ts    # s12: 工作树隔离
-│   └── full/
+│   │   ├── message-bus.ts # s15: 消息总线
+│   │   ├── teammate.ts    # s15: 队友代理
+│   │   ├── protocols.ts   # s16: 协议
+│   │   ├── autonomous.ts  # s17: 自主代理
+│   │   └── worktree.ts    # s18: 工作树隔离
+│   ├── plugin/
+│   │   └── mcp.ts         # s19: MCP 插件
+│   ├── full/
 │   │   └── agent.ts       # s_full: 综合实现
+│   ├── sessions/          # 各 session 入口
+│   │   ├── s01-agent-loop.ts
+│   │   ├── s02-tool-use.ts
+│   │   ├── ...
+│   │   └── s19-mcp-plugin.ts
 │   └── cli/
 │       └── repl.ts        # REPL 交互界面
 ├── learn/
@@ -68,12 +87,14 @@ build-claude-code/
 │   ├── 01-agent-loop.md
 │   ├── 02-tool-use.md
 │   ├── ... (每个 session 的学习笔记)
+│   └── output/            # 输出文件（公众号文章等）
 ├── skills/                 # 技能文件目录
 │   └── example/
 │       └── SKILL.md
 ├── .tasks/                 # 任务持久化目录 (运行时)
 ├── .team/                  # 团队配置目录 (运行时)
 ├── .transcripts/           # 会话记录目录 (运行时)
+├── .memory/                # 记忆存储目录 (运行时)
 └── .env.example            # 环境变量示例
 ```
 
