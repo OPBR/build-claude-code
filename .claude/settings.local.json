@@ -1,5 +1,18 @@
 {
   "permissions": {
     "allow": ["Bash(pnpm typecheck:*)"]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pnpm typecheck 2>/dev/null || true && pnpm format 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
   }
 }
