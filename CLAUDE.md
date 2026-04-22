@@ -201,8 +201,3 @@ MODEL_ID=claude-sonnet-4-20250514
 - 是否需要补充文档或注释？
 - 是否需要调整代码结构？
 - 下一步是否继续还是先处理其他事项？
-
----
-
-**Agency comes from the model. The harness makes agency real.**
-**Build great harnesses. The model will do the rest.**
