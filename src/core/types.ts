@@ -89,7 +89,37 @@ export interface SubagentContext {
 }
 
 // ============================================================================
-// Task 相关 (s07)
+// Permission 相关 (s07)
+// ============================================================================
+
+/** 权限模式 */
+export type PermissionMode = 'default' | 'plan' | 'auto'
+
+/** 权限行为 */
+export type PermissionBehavior = 'allow' | 'deny' | 'ask'
+
+/** 权限规则 */
+export interface PermissionRule {
+  tool: string // 工具名或 "*"
+  behavior: PermissionBehavior
+  path?: string // 路径 glob 模式
+  content?: string // 内容 glob 模式（用于 bash）
+}
+
+/** 权限决策结果 */
+export interface PermissionDecision {
+  behavior: PermissionBehavior
+  reason: string
+}
+
+/** Bash 安全验证失败项 */
+export interface BashValidationFailure {
+  name: string // 验证器名称
+  pattern: string // 匹配的模式
+}
+
+// ============================================================================
+// Task 相关 (s12)
 // ============================================================================
 
 export interface Task {
