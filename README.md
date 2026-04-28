@@ -1,9 +1,8 @@
 # Build Claude Code
 
-[English](./README.md) | [中文](./README-zh.md)
+[中文](./README.md) | [English](./README-en.md)
 
 > 从0到1构建 Claude Code 风格的 AI Coding Agent
-> **Agency comes from the model. The harness makes agency real.**
 
 ## 简介
 
@@ -28,13 +27,20 @@
 | 2    | s04     | Subagent           | 大任务拆分，子任务获得干净的上下文 |
 | 2    | s05     | Skills             | 按需加载知识，不要 upfront         |
 | 3    | s06     | Context Compact    | 三层压缩策略实现无限会话           |
-| 3    | s07     | Task System        | 文件持久化任务板 + 依赖图          |
-| 3    | s08     | Background Tasks   | 后台执行 + 通知队列                |
-| 4    | s09     | Agent Teams        | JSONL 邮箱通信的多代理             |
-| 4    | s10     | Team Protocols     | 关闭/审批协议                      |
-| 4    | s11     | Autonomous Agents  | 代理自动发现任务                   |
-| 5    | s12     | Worktree Isolation | 目录级隔离执行                     |
-| 6    | s_full  | Full Agent         | 所有机制整合                       |
+| 3    | s07     | Permission System  | 工具执行前的安全检查管道           |
+| 3    | s08     | Hook System        | 不改主循环也能在固定时机插入行为   |
+| 4    | s09     | Memory System      | 跨会话保存有价值的信息             |
+| 4    | s10     | System Prompt      | 动态组装系统提示词                 |
+| 4    | s11     | Error Recovery     | 错误分类 + 恢复路径                |
+| 5    | s12     | Task System        | 文件持久化任务板 + 依赖图          |
+| 5    | s13     | Background Tasks   | 后台执行 + 通知队列                |
+| 5    | s14     | Cron Scheduler     | 定时任务调度                       |
+| 6    | s15     | Agent Teams        | JSONL 邮箱通信的多代理             |
+| 6    | s16     | Team Protocols     | 关闭/审批协议                      |
+| 6    | s17     | Autonomous Agents  | 代理自动发现任务                   |
+| 6    | s18     | Worktree Isolation | 目录级隔离执行                     |
+| 7    | s19     | MCP Plugin         | 模型上下文协议插件                 |
+| 8    | s_full  | Full Agent         | 所有机制整合                       |
 
 ## 快速开始
 
@@ -113,9 +119,18 @@ build-claude-code/
 │   │   ├── tools.ts          # 工具系统
 │   │   └── types.ts          # 类型定义
 │   ├── planning/             # 计划模块 (s03-s05)
-│   ├── persistence/          # 持久化模块 (s06-s08)
-│   ├── team/                 # 团队模块 (s09-s11)
-│   ├── isolation/            # 隔离模块 (s12)
+│   ├── persistence/          # 持久化模块 (s06-s14)
+│   │   ├── compact.ts        # s06: 上下文压缩
+│   │   ├── permission.ts     # s07: 权限系统
+│   │   ├── hook.ts           # s08: Hook 系统
+│   │   ├── memory.ts         # s09: 记忆系统
+│   │   ├── prompt.ts         # s10: 系统提示词
+│   │   ├── recovery.ts       # s11: 错误恢复
+│   │   ├── task-manager.ts   # s12: 任务系统
+│   │   ├── background.ts     # s13: 后台任务
+│   │   └── cron.ts           # s14: 定时调度
+│   ├── team/                 # 团队模块 (s15-s18)
+│   ├── plugin/               # 插件模块 (s19)
 │   ├── full/                 # 综合实现
 │   └── sessions/             # 各 session 入口
 ├── learn/
