@@ -2,8 +2,6 @@
 
 ## 核心概念
 
-> **"Discover cheap, load when needed"**
-
 把可选知识从常驻 system prompt 里拆出来。轻量目录放在 system prompt，完整正文按需加载。
 
 s05 的核心是**按需知识加载**，不是"多一个工具"。
