@@ -1,0 +1,21 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "command": "echo 'Welcome to s08 Hook System!' >&2 && exit 2"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "bash",
+        "command": "echo 'Bash command will execute...' && exit 0"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "write_file",
+        "command": "echo 'File written successfully!' >&2 && exit 2"
+      }
+    ]
+  }
+}
