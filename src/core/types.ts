@@ -185,20 +185,30 @@ export interface TeammateConfig {
 }
 
 // ============================================================================
-// Background Task 相关 (s08)
+// Hook 相关 (s08)
 // ============================================================================
 
-export interface BackgroundTask {
-  id: string
-  status: 'running' | 'completed' | 'error' | 'timeout'
-  command: string
-  result?: string
+/** Hook 事件名（什么时候触发） */
+export type HookEvent = 'SessionStart' | 'PreToolUse' | 'PostToolUse'
+
+/** 单个 Hook 的定义 */
+export interface HookDefinition {
+  matcher?: string // 工具名匹配，"*" 或省略表示所有工具
+  command: string // 要执行的 shell 命令
 }
 
-export interface BackgroundNotification {
-  task_id: string
-  status: string
-  result: string
+/** Hook 执行时的上下文（告诉 Hook 当前发生了什么） */
+export interface HookContext {
+  tool_name: string // 工具名
+  tool_input: Record<string, unknown> // 工具输入参数
+  tool_output?: string // 工具输出结果（PostToolUse 才有）
+}
+
+/** Hook 执行后的结果 */
+export interface HookResult {
+  blocked: boolean // 是否阻止工具执行
+  blockReason?: string // 阻止的原因
+  messages: string[] // 要注入给模型的消息
 }
 
 // ============================================================================

@@ -21,10 +21,12 @@ export type {
   SkillDocument,
   TeamMessage,
   TeammateConfig,
-  BackgroundTask,
-  BackgroundNotification,
   WorktreeEntry,
   LifecycleEvent,
+  HookEvent,
+  HookDefinition,
+  HookContext,
+  HookResult,
 } from './core/types'
 
 // 核心函数导出
