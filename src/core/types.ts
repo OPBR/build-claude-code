@@ -185,6 +185,30 @@ export interface TeammateConfig {
 }
 
 // ============================================================================
+// Memory 相关 (s09)
+// ============================================================================
+
+/** 记忆类型 */
+export type MemoryType = 'user' | 'feedback' | 'project' | 'reference'
+
+/** 记忆条目（存储在 .memory/ 目录下的单个记忆） */
+export interface MemoryEntry {
+  name: string // 短标识符（如 "prefer_tabs"）
+  description: string // 一行描述
+  type: MemoryType // 记忆类型
+  content: string // 完整内容
+  file: string // 文件名（如 "prefer_tabs.md"）
+}
+
+/** 解析后的 frontmatter（内部使用） */
+export interface ParsedMemory {
+  name?: string
+  description?: string
+  type?: string
+  content: string // body 部分
+}
+
+// ============================================================================
 // Hook 相关 (s08)
 // ============================================================================
 

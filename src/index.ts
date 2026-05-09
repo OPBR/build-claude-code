@@ -27,6 +27,9 @@ export type {
   HookDefinition,
   HookContext,
   HookResult,
+  MemoryType,
+  MemoryEntry,
+  ParsedMemory,
 } from './core/types'
 
 // 核心函数导出
@@ -42,3 +45,6 @@ export {
   runEdit,
   safePath,
 } from './core/tools'
+
+// 记忆系统导出 (s09)
+export { MemoryManager, MEMORY_GUIDANCE } from './persistence/memory'

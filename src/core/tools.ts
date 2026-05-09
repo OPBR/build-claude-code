@@ -165,6 +165,34 @@ export const BASE_TOOLS: ToolDefinition[] = [
       required: ['path', 'old_text', 'new_text'],
     },
   },
+  {
+    name: 'save_memory',
+    description: 'Save a persistent memory that survives across sessions.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string',
+          description: 'Short identifier (e.g. prefer_tabs, db_schema)',
+        },
+        description: {
+          type: 'string',
+          description: 'One-line summary of what this memory captures',
+        },
+        type: {
+          type: 'string',
+          enum: ['user', 'feedback', 'project', 'reference'],
+          description:
+            'user=preferences, feedback=corrections, project=non-obvious project conventions, reference=external resource pointers',
+        },
+        content: {
+          type: 'string',
+          description: 'Full memory content (multi-line OK)',
+        },
+      },
+      required: ['name', 'description', 'type', 'content'],
+    },
+  },
 ]
 
 export const BASE_HANDLERS: Record<string, ToolHandler> = {
