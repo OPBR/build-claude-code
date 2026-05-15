@@ -30,6 +30,9 @@ export type {
   MemoryType,
   MemoryEntry,
   ParsedMemory,
+  PromptBuilderOptions,
+  PromptBudget,
+  InjectionScore,
 } from './core/types'
 
 // 核心函数导出
@@ -48,3 +51,30 @@ export {
 
 // 记忆系统导出 (s09)
 export { MemoryManager, MEMORY_GUIDANCE } from './persistence/memory'
+
+// 系统提示词导出 (s10)
+export {
+  SystemPromptBuilder,
+  DYNAMIC_BOUNDARY,
+  buildSystemReminder,
+  estimateTokens,
+  DEFAULT_BUDGET,
+  wrapAsData,
+  sanitizeForPrompt,
+  detectInjection,
+  detectPromptLeakage,
+} from './persistence/prompt'
+
+// 多模型适配器导出 (s10)
+export { AnthropicAdapter, OpenAIAdapter, createAdapter } from './persistence/adapter'
+
+export type {
+  ProviderAdapter,
+  LLMRequestParams,
+  NormalizedResponse,
+  AnthropicResponse,
+  OpenAIResponse,
+  OpenAIChoice,
+  OpenAIMessage,
+  OpenAIToolCall,
+} from './persistence/adapter'

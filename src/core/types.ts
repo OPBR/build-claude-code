@@ -236,6 +236,31 @@ export interface HookResult {
 }
 
 // ============================================================================
+// System Prompt 相关 (s10)
+// ============================================================================
+
+/** SystemPromptBuilder 配置 */
+export interface PromptBuilderOptions {
+  workdir?: string
+  tools?: ToolDefinition[]
+  memoryManager?: { loadMemoryPrompt(): string; memories: Map<string, unknown> } | null
+  baseSystem?: string
+}
+
+/** Token 预算配置 */
+export interface PromptBudget {
+  maxTokens: number
+  sectionLimits: Record<string, number>
+}
+
+/** 注入检测结果 */
+export interface InjectionScore {
+  score: number
+  signals: string[]
+  detail: Record<string, number>
+}
+
+// ============================================================================
 // Worktree 相关 (s12)
 // ============================================================================
 
