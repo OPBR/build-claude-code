@@ -33,6 +33,8 @@ export type {
   PromptBuilderOptions,
   PromptBudget,
   InjectionScore,
+  ErrorCategory,
+  RecoveryDecision,
 } from './core/types'
 
 // 核心函数导出
@@ -78,3 +80,18 @@ export type {
   OpenAIMessage,
   OpenAIToolCall,
 } from './persistence/adapter'
+
+// 错误恢复导出 (s11)
+export {
+  agentLoopWithRecovery,
+  classifyError,
+  chooseRecovery,
+  backoffDelay,
+  autoCompact,
+  countMessageTokens,
+  MAX_RECOVERY_ATTEMPTS,
+  TOKEN_THRESHOLD,
+  CONTINUATION_MESSAGE,
+} from './persistence/recovery'
+
+export type { RecoveryLoopOptions } from './persistence/recovery'
