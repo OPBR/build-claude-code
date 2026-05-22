@@ -8,7 +8,7 @@
 
 这是一个**渐进式学习项目**，用 TypeScript 从零开始构建一个完整的 AI 编程代理。我们将逐步实现 Claude Code 的所有核心机制：
 
-> 本项目灵感来自 [learn-claude-code](https://github.com/shareAI-lab/learn-claude-code)（59.7k ⭐），原项目 Agent 核心由 Python 实现，本项目使用 TypeScript 重写 Agent 逻辑本身，目前已完成 s01–s10，持续更新中。适合希望在 Node.js / TypeScript 生态中深入理解 Harness 工程的开发者。
+> 本项目灵感来自 [learn-claude-code](https://github.com/shareAI-lab/learn-claude-code)（59.7k ⭐），原项目 Agent 核心由 Python 实现，本项目使用 TypeScript 重写 Agent 逻辑本身，目前已完成 s01–s11，持续更新中。适合希望在 Node.js / TypeScript 生态中深入理解 Harness 工程的开发者。
 
 - 核心循环
 - 工具系统
