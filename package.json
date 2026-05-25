@@ -34,7 +34,9 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.90.0",
+    "@anthropic-ai/tokenizer": "^0.0.4",
     "dotenv": "^17.4.2",
+    "js-tiktoken": "^1.0.21",
     "yaml": "^2.8.3"
   },
   "devDependencies": {

@@ -261,6 +261,23 @@ export interface InjectionScore {
 }
 
 // ============================================================================
+// Recovery 相关 (s11)
+// ============================================================================
+
+/** 错误类别（决定恢复路径） */
+/** max_tokens 不在其中——它是成功的 API 响应（stop_reason='max_tokens'），不是 API 错误 */
+export type ErrorCategory = 'prompt_too_long' | 'connection_error' | 'unknown'
+
+/** 恢复决策（结构化记录，不藏在 catch 块内部） */
+export interface RecoveryDecision {
+  category: ErrorCategory
+  action: 'compact' | 'backoff' | 'fail'
+  attempt: number
+  maxAttempts: number
+  reason: string
+}
+
+// ============================================================================
 // Worktree 相关 (s12)
 // ============================================================================
 

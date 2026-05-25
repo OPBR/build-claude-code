@@ -10,6 +10,8 @@
  */
 
 import type { ToolDefinition, ContentBlock } from '../core/types'
+import { countTokens as anthropicCountTokens } from '@anthropic-ai/tokenizer'
+import { getEncoding } from 'js-tiktoken'
 
 // ============================================================================
 // 响应类型
@@ -85,6 +87,9 @@ export interface ProviderAdapter {
 
   /** 解析响应为标准化格式 */
   parseResponse(response: unknown): NormalizedResponse
+
+  /** 精确计算 token 数（每个 provider 用自己的 tokenizer） */
+  countTokens(text: string): number
 }
 
 // ============================================================================
@@ -93,6 +98,10 @@ export interface ProviderAdapter {
 
 export class AnthropicAdapter implements ProviderAdapter {
   name = 'anthropic'
+
+  countTokens(text: string): number {
+    return anthropicCountTokens(text)
+  }
 
   formatSystem(system: string): string {
     // Anthropic 直接用 system 参数
@@ -132,6 +141,13 @@ export class AnthropicAdapter implements ProviderAdapter {
 
 export class OpenAIAdapter implements ProviderAdapter {
   name = 'openai'
+
+  // cl100k_base 用于 GPT-4 / GPT-3.5-turbo / GPT-4o
+  private enc = getEncoding('cl100k_base')
+
+  countTokens(text: string): number {
+    return this.enc.encode(text).length
+  }
 
   formatSystem(system: string): { role: 'system'; content: string } {
     // OpenAI 用 messages 中的 system 角色
