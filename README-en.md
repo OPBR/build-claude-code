@@ -6,7 +6,7 @@
 
 This is a **progressive learning project** that builds a complete AI coding agent from scratch using TypeScript.
 
-> Inspired by [learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) (59.7k ⭐). The original project implements its Agent core in Python; this project rewrites the Agent logic in TypeScript. Currently completed s01–s10, actively maintained. Ideal for developers who want to deeply understand Harness engineering in the Node.js / TypeScript ecosystem.
+> Inspired by [learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) (59.7k ⭐). The original project implements its Agent core in Python; this project rewrites the Agent logic in TypeScript. Currently completed s01–s12, actively maintained. Ideal for developers who want to deeply understand Harness engineering in the Node.js / TypeScript ecosystem.
 
 **Core Philosophy**: Intelligence comes from model training. The harness is just the carrier that allows intelligence to express itself. We build the carrier, not the intelligence itself.
 
