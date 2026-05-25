@@ -65,6 +65,9 @@ export {
   detectPromptLeakage,
 } from './persistence/prompt'
 
+// 任务系统导出 (s12)
+export { TaskManager, TASK_TOOLS, createTaskHandlers } from './persistence/task-manager'
+
 // 多模型适配器导出 (s10)
 export { AnthropicAdapter, OpenAIAdapter, createAdapter } from './persistence/adapter'
 
