@@ -123,14 +123,14 @@ export interface BashValidationFailure {
 // ============================================================================
 
 export interface Task {
-  id: number
+  id: string // "task_{ts}_{random}" 格式
   subject: string
-  description?: string
+  description: string // 非可选，默认 ""
   status: 'pending' | 'in_progress' | 'completed'
-  owner?: string
-  blockedBy?: number[]
-  createdAt?: number
-  updatedAt?: number
+  owner: string | null // 非可选，默认 null
+  blockedBy: string[] // 非可选，默认 []
+  createdAt: number // 创建时间戳
+  updatedAt: number // 更新时间戳
 }
 
 // ============================================================================
