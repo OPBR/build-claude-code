@@ -124,6 +124,10 @@ export const BASE_TOOLS: ToolDefinition[] = [
       type: 'object',
       properties: {
         command: { type: 'string', description: 'The shell command to execute' },
+        run_in_background: {
+          type: 'boolean',
+          description: 'Run in background for slow operations (install, build, test, deploy)',
+        },
       },
       required: ['command'],
     },
