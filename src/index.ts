@@ -70,6 +70,11 @@ export {
 // 任务系统导出 (s12)
 export { TaskManager, TASK_TOOLS, createTaskHandlers } from './persistence/task-manager'
 
+// 后台任务导出 (s13)
+export { BackgroundManager } from './persistence/background'
+
+export type { BackgroundTask } from './persistence/background'
+
 // 多模型适配器导出 (s10)
 export { AnthropicAdapter, OpenAIAdapter, createAdapter } from './persistence/adapter'
 
