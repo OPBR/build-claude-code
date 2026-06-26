@@ -1,6 +1,18 @@
 {
   "permissions": {
-    "allow": ["Bash(pnpm typecheck:*)", "Bash(pnpm tsc:*)", "Bash(npx tsc:*)"]
+    "allow": [
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm tsc:*)",
+      "Bash(npx tsc:*)",
+      "WebSearch",
+      "mcp__context7__query-docs",
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(npm view *)",
+      "Bash(npm pack *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('size:', d.get\\('dist',{}\\).get\\('unpackedSize','N/A'\\)\\); print\\('files:', len\\(d.get\\('files',[]\\)\\)\\)\")",
+      "Bash(npm info *)",
+      "WebFetch(domain:github.com)"
+    ]
   },
   "hooks": {
     "PostToolUse": [
