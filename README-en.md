@@ -51,7 +51,11 @@ Phase 6: Multi-Agent Collaboration
 Phase 7: Plugin Extension
   s19 MCP Plugin       - Model Context Protocol plugin
 
-Phase 8: Full Integration
+Phase 8: Orchestration & Goals
+  s20 Workflow Runtime - Fixed orchestration in code + journal resume
+  s21 Goal Loop        - Independent evaluator decides completion
+
+Phase 9: Full Integration
   s_full Full Agent    - All mechanisms combined
 ```
 
