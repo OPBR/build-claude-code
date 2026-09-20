@@ -25,6 +25,8 @@
     "s17": "tsx src/sessions/s17-autonomous-agents.ts",
     "s18": "tsx src/sessions/s18-worktree-isolation.ts",
     "s19": "tsx src/sessions/s19-mcp-plugin.ts",
+    "s20": "tsx src/sessions/s20-workflow-runtime.ts",
+    "s21": "tsx src/sessions/s21-goal-loop.ts",
     "full": "tsx src/sessions/s-full-agent.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",

@@ -35,7 +35,9 @@
 | 6    | s17     | Autonomous Agents  | 代理自动发现任务                   |
 | 6    | s18     | Worktree Isolation | 目录级隔离执行                     |
 | 7    | s19     | MCP Plugin         | 模型上下文协议插件                 |
-| 8    | s_full  | Full Agent         | 所有机制整合                       |
+| 8    | s20     | Workflow Runtime   | 固定编排写进代码 + journal 续跑    |
+| 8    | s21     | Goal Loop          | 独立评估器决定目标是否真正完成     |
+| 9    | s_full  | Full Agent         | 所有机制整合                       |
 
 ## 目录结构
 
@@ -73,13 +75,17 @@ build-claude-code/
 │   │   └── worktree.ts    # s18: 工作树隔离
 │   ├── plugin/
 │   │   └── mcp.ts         # s19: MCP 插件
+│   ├── workflow/
+│   │   └── runtime.ts     # s20: 工作流运行时
+│   ├── goal/
+│   │   └── goal-loop.ts   # s21: 目标闭环
 │   ├── full/
 │   │   └── agent.ts       # s_full: 综合实现
 │   ├── sessions/          # 各 session 入口
 │   │   ├── s01-agent-loop.ts
 │   │   ├── s02-tool-use.ts
 │   │   ├── ...
-│   │   └── s19-mcp-plugin.ts
+│   │   └── s21-goal-loop.ts
 │   └── cli/
 │       └── repl.ts        # REPL 交互界面
 ├── learn/
